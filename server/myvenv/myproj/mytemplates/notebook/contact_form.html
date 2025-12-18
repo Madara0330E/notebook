@@ -1,0 +1,23 @@
+{% extends 'notebook/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card my-4">
+            <div class="card-header">
+                <h3>{{ title }} для {{ person }}</h3>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-success">Сохранить</button>
+                        <a href="{% url 'show' person.id %}" class="btn btn-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

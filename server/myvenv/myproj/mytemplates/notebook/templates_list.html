@@ -1,0 +1,44 @@
+{% extends 'notebook/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h1>Шаблоны поздравлений</h1>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="{% url 'template_create' %}" class="btn btn-primary">+ Добавить шаблон</a>
+        </div>
+    </div>
+
+    <div class="alert alert-info">
+        <strong>Подсказка:</strong> Используйте <code>{name}</code> в тексте шаблона - оно будет заменено на имя
+        человека.
+    </div>
+
+    {% if templates %}
+    <div class="row">
+        {% for template in templates %}
+        <div class="col-md-6 mb-3">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <strong>{{ template.event_type }}</strong>
+                    <a href="{% url 'template_delete' template.id %}" class="btn btn-sm btn-danger"
+                        onclick="return confirm('Удалить этот шаблон?');">
+                        Удалить
+                    </a>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">{{ template.template_text }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-warning">
+        <strong>Нет шаблонов.</strong> Создайте первый шаблон поздравления!
+    </div>
+    {% endif %}  
+</div>
+{% endblock %}

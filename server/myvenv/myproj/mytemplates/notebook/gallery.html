@@ -1,0 +1,86 @@
+{% extends 'notebook/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <h1>Список людей</h1>
+        </div>
+        <div class="col-md-6 text-end">
+            <a href="{% url 'create' %}" class="btn btn-primary">Добавить человека</a>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <form method="get" class="d-flex">
+                <input type="text" name="q" class="form-control me-2" placeholder="Поиск по ФИО..."
+                    value="{{ search_query }}">
+                <button type="submit" class="btn btn-outline-success">Найти</button>
+                <a href="{% url 'index' %}" class="btn btn-outline-secondary ms-2">Сброс</a>
+            </form>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <div class="btn-group" role="group">
+                <a href="?sort=alphabet{% if search_query %}&q={{ search_query }}{% endif %}"
+                    class="btn btn-outline-primary">По алфавиту</a>
+                <a href="?sort=date{% if search_query %}&q={{ search_query }}{% endif %}"
+                    class="btn btn-outline-primary">По дате добавления</a>
+            </div>
+        </div>
+    </div>
+
+    {% if greetings %}
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card border-info">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">🎉 Поздравления на сегодня</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for greeting in greetings %}
+                        <li class="list-group-item">
+                            <strong>{{ greeting.person }}:</strong> {{ greeting.greeting_text }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        {% for person in persons %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'show' person.id %}">
+                            {{ person.last_name }} {{ person.first_name }} {{ person.patronymic|default:"" }}
+                        </a>
+                    </h5>
+                    {% if person.birth_date %}
+                    <p class="card-text text-muted">Дата рождения: {{ person.birth_date }}</p>
+                    {% endif %}
+                    {% if person.position %}
+                    <p class="card-text">{{ person.position }}</p>
+                    {% endif %}
+                </div>
+                <div class="card-footer bg-transparent border-top-0">
+                    <a href="{% url 'show' person.id %}" class="btn btn-sm btn-outline-primary">Подробнее</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-warning">Никого не найдено.</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

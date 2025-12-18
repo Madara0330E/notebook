@@ -1,0 +1,47 @@
+{% extends 'notebook/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>{{ title }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="mb-3">
+                            <label for="event_type" class="form-label">Тип события</label>
+                            <input type="text" class="form-control" id="event_type" name="event_type"
+                                placeholder="Например: День рождения, Новый год, Свадьба" required>
+                            <small class="text-muted">Укажите тип события для которого это поздравление</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="template_text" class="form-label">Текст поздравления</label>
+                            <textarea class="form-control" id="template_text" name="template_text" rows="5"
+                                placeholder="Например: С Днём Рождения, {name}! Желаем счастья и здоровья!"
+                                required></textarea>
+                            <small class="text-muted">Используйте <code>{name}</code> чтобы подставить имя
+                                человека</small>
+                        </div>
+
+                        <div class="mt-3">
+                            <button type="submit" class="btn btn-success">Сохранить</button>
+                            <a href="{% url 'templates_list' %}" class="btn btn-secondary">Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <strong>💡 Подсказка:</strong> Шаблоны используются для автоматического формирования поздравлений.
+                Система будет искать подходящий шаблон по типу события и подставлять имя человека вместо
+                <code>{name}</code>.
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
